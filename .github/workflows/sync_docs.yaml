@@ -26,6 +26,16 @@ jobs:
             **/*.txt
           json: true
 
+      - name: Display changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "Modified files:"
+          echo '${{ steps.changed-files.outputs.modified_files }}' | jq '.'
+          echo "Added files:"
+          echo '${{ steps.changed-files.outputs.added_files }}' | jq '.'
+          echo "Deleted files:"
+          echo '${{ steps.changed-files.outputs.deleted_files }}' | jq '.'
+
       - name: Send webhook
         if: steps.changed-files.outputs.any_changed == 'true'
         env:
